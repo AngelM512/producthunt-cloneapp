@@ -11,19 +11,49 @@ def sign(request):
         if request.POST['password1'] == request.POST['password2']:   
             try: 
                 user = User.objects.get(username=request.POST['username'])
-                return render(request, 'accounts/sign.html',{'error':'Username has already been taken'})
+                
+                return render(request, 'accounts/sign.html',
+                {'error':'Username has already been taken'})
+            
             except User.DoesNotExist:
+
                 user = User.objects.create_user(request.POST['username'],
                 password=request.POST['password1'])
+                
                 auth.login(request,user)
+                
                 return redirect('home')
+
+        else:
+            return render(request, 'accounts/sign.html',{'error':'Password don\'t match'})
+
 
     else:
         return render(request, 'accounts/sign.html')
 
 def login(request):
-    return render(request, 'accounts/login.html')
+    if request.method == 'POST':
+        
+        user = auth.authenticate(username=request.POST['username'],
+               password=request.POST['password'])  
+        
+        if user is not None: #If it's really an User object....
+            auth.login(request, user)
+
+            return redirect('home')         
+        
+        else:
+            return render(request, 'accounts/login.html',
+            {'error':'Username or Password is incorrect.'})    
+
+    else:
+        return render(request, 'accounts/login.html')
 
 def logout(request):
     #TODO route to homepage 
-    return render(request, 'accounts/logout.html')
+    if request.method == 'POST':
+    
+        auth.logout(request)
+        
+        return redirect('home')
+    
