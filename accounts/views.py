@@ -8,7 +8,7 @@ def sign(request):
     if request.method == 'POST':
         # User has info and wants an account!
         if request.POST['password1'] == request.POST['password2']:   
-            try: 
+            try:
                 user = User.objects.get(username=request.POST['username'])
                 return render(request, 'accounts/sign.html',
                 {'error':'Username has already been taken'})
