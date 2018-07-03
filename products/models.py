@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
 
 
 class Product(models.Model):
@@ -11,7 +10,9 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/')
     icon = models.ImageField(upload_to='images/')
     body = models.TextField(default=1)
-    hunter = models.ForeignKey(User, on_delete=models.CASCADE)
+    hunter = models.ForeignKey(User, on_delete = models.CASCADE)
+    class Meta:
+        verbose_name_plural = 'Control Products'
 
     def __str__(self):
         return self.title

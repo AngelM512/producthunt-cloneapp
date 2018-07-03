@@ -2,9 +2,11 @@
 
 
 {% block content %}
+{%for each_product in products %}
+<ul>
+  <li>{{ each_product }}</li>
 
-<br />
-Home
-<br />
+</ul>
+{% endfor %}
 
 {% endblock %}
